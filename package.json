@@ -1,0 +1,15 @@
+{
+  "name": "our-shelves",
+  "version": "1.0.0",
+  "description": "**Project Name: Our Shelves**  \r **Partners: Augy Markham, Rebecca Riffle**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
