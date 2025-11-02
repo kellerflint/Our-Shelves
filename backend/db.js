@@ -14,14 +14,23 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  charset: 'utf8mb4'
 });
 
 // test the database connection
-pool.getConnection()
-  .then(() => console.log("Database connected successfully"))
-  .catch((err) => {
-    console.error("Failed to connect to the database:", err.message);
-    process.exit(1);
-  });
+// pool.getConnection()
+//   .then(() => console.log("Database connected successfully"))
+//   .catch((err) => {
+//     console.error("Failed to connect to the database:", err.message);
+//     process.exit(1);
+//   });
+
+if (process.env.NODE_ENV !== 'test') {
+  pool.getConnection()
+    .then(() => console.log("Database connected successfully"))
+    .catch((err) => {
+      console.error("Failed to connect to the database:", err.message);
+    });
+}
 
 export default pool;
