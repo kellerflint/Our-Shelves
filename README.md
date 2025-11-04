@@ -12,6 +12,10 @@ A reading tracker web application that allows users to search for books using th
 - Kim
 - Maddie
 
+**Sprint 4:**
+- Tyler
+- Raymond
+
 ---
 
 ## Project Description
