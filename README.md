@@ -238,6 +238,48 @@ docker compose down
 - Check firewall settings if deploying to a remote server (allow ports 3000 and 5173).
 
 ---
+## Testing
+### Running Tests on the Backend
+```bash
+cd backend
+npm test
+```
+### Running Tests on the Frontend
+```bash
+cd frontend
+npm test
+```
+### Running E2E Tests
+Make sure the backend is running
+```bash
+cd backend
+npm run dev
+```
+and Make sure the frontend is running
+```bash
+cd frontend
+npm run dev
+```
+Then access the e2e folder from the root directory
+```bash
+cd e2e
+npm install
+```
+Once you've done this you have two options to run the test.
+#### Option 1: 
+```bash
+npm run cy:open # Will open an application to view the tests live
+```
+#### Option 2:
+```bash
+npm run cy:run # Will run the tests in the terminal
+```
+
+#### ***NOTE:***
+Cypress will run and create a screenshot and video folder displaying the errors and the functionality of tests.
+
+
+---
 
 ## License
 This project is for educational use as part of a student project at Green River College.
