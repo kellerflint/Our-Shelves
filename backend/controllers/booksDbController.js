@@ -131,5 +131,3 @@ export const deleteBook = async (req, res) => {
     res.status(500).json({ error: 'Failed to delete book' });
   }
 };
-
-module.exports = {listBooks, getBookById, createBook, updateBook, deleteBook};

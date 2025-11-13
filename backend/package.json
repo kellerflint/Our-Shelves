@@ -40,6 +40,7 @@
     "mysql2": "^3.15.1"
   },
   "devDependencies": {
+    "better-sqlite3": "^12.4.1",
     "cross-env": "^10.1.0",
     "jest": "^29.7.0",
     "nodemon": "^3.1.10",
