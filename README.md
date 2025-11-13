@@ -286,6 +286,9 @@ backend/
 
 ```
 cd backend
+comment out these lines in jest.config.js to avoid integration test interference:
+// testMatch: ['**/__tests__/**/*.int.test.js'],
+// setupFilesAfterEnv: ['./__tests__/setupTests.js'],
 npm test -- __tests__/bookController.test.js __tests__/booksDbController.test.js
 ```
 
