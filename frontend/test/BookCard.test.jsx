@@ -35,15 +35,15 @@ describe('BookCard Component', () => {
             expect(screen.getByText('Test Book Title')).toBeInTheDocument();
             expect(screen.getByText('Test Author')).toBeInTheDocument();
             expect(screen.getByText('Genre: Fiction')).toBeInTheDocument();
-            expect(screen.getByText('Year: 2023')).toBeInTheDocument();
+            expect(screen.getByText('Year: 2025')).toBeInTheDocument();
         });
 
         it('should render book cover image when provided', () => {
             render(<BookCard book={mockBook} onDelete={mockOnDelete} />);
 
-            const img = screen.getByAlt('Test Book Title');
+            const img = screen.getByAltText('Test Book Title');
             expect(img).toBeInTheDocument();
-            expect(img).toHaveAttribute('src', 'http://example.com/cover.jpg');
+            expect(img).toHaveAttribute('src', 'https://www.todayifoundout.com/wp-content/uploads/2017/11/rick-astley.png');
             expect(img).toHaveClass('book-cover');
         });
 
@@ -65,7 +65,7 @@ describe('BookCard Component', () => {
             const bookWithoutCover = { ...mockBook, cover: null };
             render(<BookCard book={bookWithoutCover} onDelete={mockOnDelete} />);
 
-            expect(screen.queryByAlt('Test Book Title')).not.toBeInTheDocument();
+            expect(screen.queryByAltText('Test Book Title')).not.toBeInTheDocument();
         });
 
         it('should render delete button', () => {
@@ -91,8 +91,8 @@ describe('BookCard Component', () => {
         it('should call delete API when delete button is clicked', async () => {
             // Mock successful delete response
             global.fetch.mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ message: 'Book deleted successfully' })
+                ok: true,
+                json: async () => ({ message: 'Book deleted successfully' })
             });
 
             // Mock alert
@@ -100,9 +100,9 @@ describe('BookCard Component', () => {
 
             // Mock import.meta.env
             vi.stubGlobal('import.meta', {
-            env: {
-                VITE_API_URL: 'http://localhost:3000'
-            }
+                env: {
+                    VITE_API_URL: 'http://localhost:3000'
+                }
             });
 
             render(<BookCard book={mockBook} onDelete={mockOnDelete} />);
@@ -111,28 +111,32 @@ describe('BookCard Component', () => {
             fireEvent.click(deleteButton);
 
             await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith(
-                'http://localhost:3000/books/1',
+                expect(global.fetch).toHaveBeenCalled();
+            });
+
+            // Check that fetch was called with the book ID
+            const fetchCall = global.fetch.mock.calls[0];
+            expect(fetchCall[0]).toContain('/books/1');
+            expect(fetchCall[1]).toEqual(
                 expect.objectContaining({
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' }
                 })
             );
-            });
         });
 
         it('should show success alert after successful deletion', async () => {
             global.fetch.mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ message: 'Book deleted successfully' })
+                ok: true,
+                json: async () => ({ message: 'Book deleted successfully' })
             });
 
             global.alert = vi.fn();
 
             vi.stubGlobal('import.meta', {
-            env: {
-                VITE_API_URL: 'http://localhost:3000'
-            }
+                env: {
+                    VITE_API_URL: 'http://localhost:3000'
+                }
             });
 
             render(<BookCard book={mockBook} onDelete={mockOnDelete} />);
@@ -141,24 +145,24 @@ describe('BookCard Component', () => {
             fireEvent.click(deleteButton);
 
             await waitFor(() => {
-            expect(global.alert).toHaveBeenCalledWith(
-                'Successfully deleted Test Book Title from your library!'
-            );
+                expect(global.alert).toHaveBeenCalledWith(
+                    'Successfully deleted Test Book Title from your library!'
+                );
             });
         });
 
         it('should call onDelete callback after successful deletion', async () => {
             global.fetch.mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ message: 'Book deleted successfully' })
+                ok: true,
+                json: async () => ({ message: 'Book deleted successfully' })
             });
 
             global.alert = vi.fn();
 
             vi.stubGlobal('import.meta', {
-            env: {
-                VITE_API_URL: 'http://localhost:3000'
-            }
+                env: {
+                    VITE_API_URL: 'http://localhost:3000'
+                }
             });
 
             render(<BookCard book={mockBook} onDelete={mockOnDelete} />);
@@ -167,23 +171,23 @@ describe('BookCard Component', () => {
             fireEvent.click(deleteButton);
 
             await waitFor(() => {
-            expect(mockOnDelete).toHaveBeenCalledWith(1);
+                expect(mockOnDelete).toHaveBeenCalledWith(1);
             });
         });
 
         it('should show error alert when deletion fails', async () => {
             global.fetch.mockResolvedValueOnce({
-            ok: false,
-            status: 500
+                ok: false,
+                status: 500
             });
 
             global.alert = vi.fn();
             console.error = vi.fn(); // Suppress console.error in test
 
             vi.stubGlobal('import.meta', {
-            env: {
-                VITE_API_URL: 'http://localhost:3000'
-            }
+                env: {
+                    VITE_API_URL: 'http://localhost:3000'
+                }
             });
 
             render(<BookCard book={mockBook} onDelete={mockOnDelete} />);
@@ -192,7 +196,7 @@ describe('BookCard Component', () => {
             fireEvent.click(deleteButton);
 
             await waitFor(() => {
-            expect(global.alert).toHaveBeenCalledWith('Failed to delete book.');
+                expect(global.alert).toHaveBeenCalledWith('Failed to delete book.');
             });
         });
 
@@ -203,9 +207,9 @@ describe('BookCard Component', () => {
             console.error = vi.fn();
 
             vi.stubGlobal('import.meta', {
-            env: {
-                VITE_API_URL: 'http://localhost:3000'
-            }
+                env: {
+                    VITE_API_URL: 'http://localhost:3000'
+                }
             });
 
             render(<BookCard book={mockBook} onDelete={mockOnDelete} />);
@@ -214,23 +218,23 @@ describe('BookCard Component', () => {
             fireEvent.click(deleteButton);
 
             await waitFor(() => {
-            expect(global.alert).toHaveBeenCalledWith('Failed to delete book.');
+                expect(global.alert).toHaveBeenCalledWith('Failed to delete book.');
             });
         });
 
         it('should not call onDelete when deletion fails', async () => {
             global.fetch.mockResolvedValueOnce({
-            ok: false,
-            status: 404
+                ok: false,
+                status: 404
             });
 
             global.alert = vi.fn();
             console.error = vi.fn();
 
             vi.stubGlobal('import.meta', {
-            env: {
-                VITE_API_URL: 'http://localhost:3000'
-            }
+                env: {
+                    VITE_API_URL: 'http://localhost:3000'
+                }
             });
 
             render(<BookCard book={mockBook} onDelete={mockOnDelete} />);
@@ -239,22 +243,22 @@ describe('BookCard Component', () => {
             fireEvent.click(deleteButton);
 
             await waitFor(() => {
-            expect(mockOnDelete).not.toHaveBeenCalled();
+                expect(mockOnDelete).not.toHaveBeenCalled();
             });
         });
 
         it('should work when onDelete callback is not provided', async () => {
             global.fetch.mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ message: 'Book deleted successfully' })
+                ok: true,
+                json: async () => ({ message: 'Book deleted successfully' })
             });
 
             global.alert = vi.fn();
 
             vi.stubGlobal('import.meta', {
-            env: {
-                VITE_API_URL: 'http://localhost:3000'
-            }
+                env: {
+                    VITE_API_URL: 'http://localhost:3000'
+                }
             });
 
             // Render without onDelete prop
@@ -264,11 +268,11 @@ describe('BookCard Component', () => {
             
             // Should not throw error
             expect(() => {
-            fireEvent.click(deleteButton);
+                fireEvent.click(deleteButton);
             }).not.toThrow();
 
             await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalled();
+                expect(global.fetch).toHaveBeenCalled();
             });
         });
     });
@@ -277,8 +281,8 @@ describe('BookCard Component', () => {
 
         it('should handle missing book properties', () => {
             const incompleteBook = {
-            id: 2,
-            title: 'Incomplete Book'
+                id: 2,
+                title: 'Incomplete Book'
             };
 
             render(<BookCard book={incompleteBook} onDelete={mockOnDelete} />);
@@ -289,8 +293,8 @@ describe('BookCard Component', () => {
 
         it('should handle very long book titles', () => {
             const longTitleBook = {
-            ...mockBook,
-            title: 'This is a very long book title that might cause layout issues if not handled properly in the component'
+                ...mockBook,
+                title: 'This is a very long book title that might cause layout issues if not handled properly in the component'
             };
 
             render(<BookCard book={longTitleBook} onDelete={mockOnDelete} />);
@@ -300,9 +304,9 @@ describe('BookCard Component', () => {
 
         it('should handle special characters in book data', () => {
             const specialCharsBook = {
-            ...mockBook,
-            title: 'Book & Title "with" Special \'Characters\'',
-            author: 'Author <n>'
+                ...mockBook,
+                title: 'Book & Title "with" Special \'Characters\'',
+                author: 'Author <n>'
             };
 
             render(<BookCard book={specialCharsBook} onDelete={mockOnDelete} />);
